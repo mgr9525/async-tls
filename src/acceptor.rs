@@ -26,6 +26,11 @@ pub struct TlsAcceptor {
 }
 
 impl TlsAcceptor {
+    pub fn new(inner: ServerConfig) -> TlsAcceptor {
+        TlsAcceptor {
+            inner: Arc::new(inner),
+        }
+    }
     /// Accept a client connections. `stream` can be any type implementing `AsyncRead` and `AsyncWrite`,
     /// such as TcpStreams or Unix domain sockets.
     ///

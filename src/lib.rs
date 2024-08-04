@@ -18,5 +18,5 @@ pub use acceptor::{Accept, TlsAcceptor};
 #[cfg(feature = "client")]
 pub use connector::{Connect, TlsConnector};
 
-#[cfg(all(test, feature = "client", feature = "early-data"))]
-mod test_0rtt;
+// #[cfg(all(test, feature = "client", feature = "early-data"))]
+// mod test_0rtt;

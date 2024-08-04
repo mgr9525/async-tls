@@ -59,7 +59,6 @@ fn load_config(options: &Options) -> io::Result<ServerConfig> {
 
     // we don't use client authentication
     let config = ServerConfig::builder()
-        .with_safe_defaults()
         .with_no_client_auth()
         // set this server to use one cert together with the loaded private key
         .with_single_cert(certs, key)
@@ -108,7 +107,8 @@ fn main() -> io::Result<()> {
 
     // We create one TLSAcceptor around a shared configuration.
     // Cloning the acceptor will not clone the configuration.
-    let acceptor = TlsAcceptor::from(Arc::new(config));
+    let acceptor = TlsAcceptor::new(config);
+    // let acceptor = TlsAcceptor::from(Arc::new(config));
 
     // We start a classic TCP server, passing all connections to the
     // handle_connection async function

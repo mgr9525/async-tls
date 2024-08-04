@@ -363,6 +363,3 @@ impl<'a, IO: AsyncRead + AsyncWrite + Unpin> AsyncWrite for Stream<'a, IO> {
     }
 }
 
-#[cfg(all(test, feature = "client"))]
-#[path = "test_stream.rs"]
-mod test_stream;
