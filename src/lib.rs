@@ -14,7 +14,7 @@ mod rusttls;
 pub mod server;
 
 #[cfg(feature = "server")]
-pub use acceptor::{Accept, TlsAcceptor};
+pub use acceptor::{Accept, Acceptor, ReadTls, TlsAcceptor};
 #[cfg(feature = "client")]
 pub use connector::{Connect, TlsConnector};
 

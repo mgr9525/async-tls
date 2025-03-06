@@ -148,21 +148,7 @@ impl<'a, IO: AsyncRead + AsyncWrite + Unpin> Stream<'a, IO> {
     }
 
     fn complete_read_io(&mut self, cx: &mut Context) -> Poll<io::Result<usize>> {
-        struct Reader<'a, 'b, T> {
-            io: &'a mut T,
-            cx: &'a mut Context<'b>,
-        }
-
-        impl<'a, 'b, T: AsyncRead + Unpin> Read for Reader<'a, 'b, T> {
-            fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-                match Pin::new(&mut self.io).poll_read(self.cx, buf) {
-                    Poll::Ready(result) => result,
-                    Poll::Pending => Err(io::ErrorKind::WouldBlock.into()),
-                }
-            }
-        }
-
-        let mut reader = Reader { io: self.io, cx };
+        let mut reader = super::StdReader::new(self.io, cx);
 
         let n = match self.conn.read_tls(&mut reader) {
             Ok(n) => n,
@@ -362,4 +348,3 @@ impl<'a, IO: AsyncRead + AsyncWrite + Unpin> AsyncWrite for Stream<'a, IO> {
         Pin::new(&mut this.io).poll_close(cx)
     }
 }
-
